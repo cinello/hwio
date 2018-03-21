@@ -7,28 +7,28 @@ import (
 	"strconv"
 )
 
-// ODroidC1AnalogModule is a module for handling the Odroid C1 analog hardware, which is not generic.
-type ODroidC1AnalogModule struct {
+// ODroidCXAnalogModule is a module for handling the Odroid C1 analog hardware, which is not generic.
+type ODroidCXAnalogModule struct {
 	name string
 
 	analogInitialised bool
 
-	definedPins ODroidC1AnalogModulePinDefMap
+	definedPins ODroidCXAnalogModulePinDefMap
 
-	openPins map[Pin]*ODroidC1AnalogModuleOpenPin
+	openPins map[Pin]*ODroidCXAnalogModuleOpenPin
 }
 
 // Represents the definition of an analog pin, which should contain all the info required to open, close, read and write the pin
 // using FS drivers.
-type ODroidC1AnalogModulePinDef struct {
+type ODroidCXAnalogModulePinDef struct {
 	pin           Pin
 	analogLogical int
 }
 
 // A map of GPIO pin definitions.
-type ODroidC1AnalogModulePinDefMap map[Pin]*ODroidC1AnalogModulePinDef
+type ODroidCXAnalogModulePinDefMap map[Pin]*ODroidCXAnalogModulePinDef
 
-type ODroidC1AnalogModuleOpenPin struct {
+type ODroidCXAnalogModuleOpenPin struct {
 	pin           Pin
 	analogLogical int
 
@@ -38,26 +38,26 @@ type ODroidC1AnalogModuleOpenPin struct {
 	valueFile *os.File
 }
 
-func NewODroidC1AnalogModule(name string) (result *ODroidC1AnalogModule) {
-	result = &ODroidC1AnalogModule{name: name}
-	result.openPins = make(map[Pin]*ODroidC1AnalogModuleOpenPin)
+func NewODroidCXAnalogModule(name string) (result *ODroidCXAnalogModule) {
+	result = &ODroidCXAnalogModule{name: name}
+	result.openPins = make(map[Pin]*ODroidCXAnalogModuleOpenPin)
 	return result
 }
 
 // Set options of the module. Parameters we look for include:
-// - "pins" - an object of type ODroidC1AnalogModulePinDefMap
-func (module *ODroidC1AnalogModule) SetOptions(options map[string]interface{}) error {
+// - "pins" - an object of type ODroidCXAnalogModulePinDefMap
+func (module *ODroidCXAnalogModule) SetOptions(options map[string]interface{}) error {
 	v := options["pins"]
 	if v == nil {
 		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 
-	module.definedPins = v.(ODroidC1AnalogModulePinDefMap)
+	module.definedPins = v.(ODroidCXAnalogModulePinDefMap)
 	return nil
 }
 
 // enable GPIO module. It doesn't allocate any pins immediately.
-func (module *ODroidC1AnalogModule) Enable() error {
+func (module *ODroidCXAnalogModule) Enable() error {
 	// once-off initialisation of analog
 	if !module.analogInitialised {
 		module.analogInitialised = true
@@ -79,7 +79,7 @@ func (module *ODroidC1AnalogModule) Enable() error {
 }
 
 // disables module and release any pins assigned.
-func (module *ODroidC1AnalogModule) Disable() error {
+func (module *ODroidCXAnalogModule) Disable() error {
 	// Unassign any pins we may have assigned
 	for pin, _ := range module.definedPins {
 		// attempt to assign this pin for this module.
@@ -93,11 +93,11 @@ func (module *ODroidC1AnalogModule) Disable() error {
 	return nil
 }
 
-func (module *ODroidC1AnalogModule) GetName() string {
+func (module *ODroidCXAnalogModule) GetName() string {
 	return module.name
 }
 
-func (module *ODroidC1AnalogModule) AnalogRead(pin Pin) (value int, e error) {
+func (module *ODroidCXAnalogModule) AnalogRead(pin Pin) (value int, e error) {
 	openPin := module.openPins[pin]
 	if openPin == nil {
 		return 0, errors.New("Pin is being read for analog value but has not been opened. Have you called PinMode?")
@@ -105,14 +105,14 @@ func (module *ODroidC1AnalogModule) AnalogRead(pin Pin) (value int, e error) {
 	return openPin.analogGetValue()
 }
 
-func (module *ODroidC1AnalogModule) makeOpenAnalogPin(pin Pin) error {
+func (module *ODroidCXAnalogModule) makeOpenAnalogPin(pin Pin) error {
 	p := module.definedPins[pin]
 	if p == nil {
 		return fmt.Errorf("Pin %d is not known to analog module", pin)
 	}
 
 	path := fmt.Sprintf("/sys/class/saradc/saradc_ch%d", p.analogLogical)
-	result := &ODroidC1AnalogModuleOpenPin{pin: pin, analogLogical: p.analogLogical, analogFile: path}
+	result := &ODroidCXAnalogModuleOpenPin{pin: pin, analogLogical: p.analogLogical, analogFile: path}
 
 	module.openPins[pin] = result
 
@@ -124,7 +124,7 @@ func (module *ODroidC1AnalogModule) makeOpenAnalogPin(pin Pin) error {
 	return nil
 }
 
-func (op *ODroidC1AnalogModuleOpenPin) analogOpen() error {
+func (op *ODroidCXAnalogModuleOpenPin) analogOpen() error {
 	// Open analog input file computed from the calculated path of actual analog files and the analog pin name
 	f, e := os.OpenFile(op.analogFile, os.O_RDONLY, 0666)
 	op.valueFile = f
@@ -132,7 +132,7 @@ func (op *ODroidC1AnalogModuleOpenPin) analogOpen() error {
 	return e
 }
 
-func (op *ODroidC1AnalogModuleOpenPin) analogGetValue() (int, error) {
+func (op *ODroidCXAnalogModuleOpenPin) analogGetValue() (int, error) {
 	var b []byte
 	b = make([]byte, 5)
 	n, e := op.valueFile.ReadAt(b, 0)
@@ -148,6 +148,6 @@ func (op *ODroidC1AnalogModuleOpenPin) analogGetValue() (int, error) {
 	return value, e
 }
 
-func (op *ODroidC1AnalogModuleOpenPin) analogClose() error {
+func (op *ODroidCXAnalogModuleOpenPin) analogClose() error {
 	return op.valueFile.Close()
 }
