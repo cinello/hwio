@@ -3,7 +3,7 @@
 package bh1750fvi
 
 import (
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 )
 
 type ReadMode int

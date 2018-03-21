@@ -4,7 +4,7 @@ package main
 // Implements a continuous 8-bit binary counter.
 
 import (
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 )
 
 func main() {

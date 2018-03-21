@@ -7,7 +7,7 @@
 package main
 
 import (
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 )
 
 func main() {

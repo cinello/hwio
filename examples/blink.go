@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 )
 
 func main() {

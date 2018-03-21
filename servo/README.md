@@ -2,8 +2,8 @@ The hwio/servo package contains definitions for driving servo motors using PWM p
 module that the servo is attached. Here is an example of usage:
 
 	import (
-		"github.com/mrmorphic/hwio"
-		"github.com/mrmorphic/hwio/servo"
+		"github.com/cinellodev/hwio"
+		"github.com/cinellodev/hwio/servo"
 	)
 
 	m, e := hwio.GetModule("pwm2")

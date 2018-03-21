@@ -11,7 +11,7 @@
 package hd44780
 
 import (
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 )
 
 const (

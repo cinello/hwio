@@ -8,8 +8,8 @@ Import the packages:
 
 	// import the require modules
 	import(
-		"github.com/mrmorphic/hwio"
-		"github.com/mrmorphic/hwio/devices/bh1750fvi"
+		"github.com/cinellodev/hwio"
+		"github.com/cinellodev/hwio/devices/bh1750fvi"
 	)
 
 Initialise by fetching an i2c module from the driver. You can get instances of devices attached to

@@ -5,7 +5,7 @@ package nunchuck
 
 import (
 	"fmt"
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 	"math"
 )
 

@@ -8,7 +8,7 @@
 package tmp102
 
 import (
-	"github.com/mrmorphic/hwio"
+	"github.com/cinellodev/hwio"
 )
 
 const (
