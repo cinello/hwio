@@ -30,7 +30,7 @@ func (d *OdroidCXDriver) MatchesHardwareConfig() bool {
 	// that are system wide, that are listed after CPU specific properties.
 	// CpuInfo associated these with CPU 3, the last one it saw. Not ideal, but works.
 	hw := CpuInfo(3, "Hardware")
-	if hw == "ODROIDC" {
+	if hw == "ODROIDC" || hw == "ODROID-C2" {
 		return true
 	}
 	return false
