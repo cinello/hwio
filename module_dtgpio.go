@@ -149,6 +149,11 @@ func (module *DTGPIOModule) ClosePin(pin Pin) error {
 	if e != nil {
 		return e
 	}
+	e = openPin.valueFile.Close()
+	if e != nil {
+		return e
+	}
+	delete(module.openPins, pin)
 	return UnassignPin(pin)
 }
 
