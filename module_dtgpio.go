@@ -30,6 +30,7 @@ type DTGPIOModuleOpenPin struct {
 	pin          Pin
 	gpioLogical  int
 	gpioBaseName string
+	mode         PinIOMode
 	valueFile    *os.File
 }
 
@@ -112,6 +113,7 @@ func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 			return e
 		}
 	}
+	openPin.mode = mode
 	return nil
 }
 
