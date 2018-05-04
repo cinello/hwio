@@ -74,6 +74,11 @@ func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 		return fmt.Errorf("Pin %d is not known as a GPIO pin", pin)
 	}
 
+	// close if already open and the new mode in different
+	if oldOpenPin, ok := module.openPins[pin]; ok && mode != oldOpenPin.mode {
+		ClosePin(pin)
+	}
+
 	// attempt to assign this pin for this module.
 	e := AssignPin(pin, module)
 	if e != nil {
