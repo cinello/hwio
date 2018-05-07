@@ -46,98 +46,98 @@ func (d *OdroidCXDriver) createPinData() {
 	case 1:
 		d.pinConfigs = []*DTPinConfig{
 			// dummy placeholder for "pin 0"
-			&DTPinConfig{[]string{"dummy"}, []string{"unassignable"}, 0, 0}, // 0 - spacer
+			{[]string{"dummy"}, []string{"unassignable"}, 0, 0}, // 0 - spacer
 
 			// Odroid has a mostly Raspberry Pi compatible header (40-pin), except GPIO numbers are different,
 			// and an analog input is available.
-			&DTPinConfig{[]string{"3.3v-1"}, []string{"unassignable"}, 0, 0},   // 1
-			&DTPinConfig{[]string{"5v-1"}, []string{"unassignable"}, 0, 0},     // 2
-			&DTPinConfig{[]string{"sda1"}, []string{"i2ca"}, 0, 0},             // 3
-			&DTPinConfig{[]string{"5v-2"}, []string{"unassignable"}, 0, 0},     // 4
-			&DTPinConfig{[]string{"scl1"}, []string{"i2ca"}, 0, 0},             // 5
-			&DTPinConfig{[]string{"ground-1"}, []string{"unassignable"}, 0, 0}, // 6
-			&DTPinConfig{[]string{"gpio83"}, []string{"gpio"}, 83, 0},          // 7
-			&DTPinConfig{[]string{"txd"}, []string{"serial"}, 0, 0},            // 8
-			&DTPinConfig{[]string{"ground-2"}, []string{"unassignable"}, 0, 0}, // 9
-			&DTPinConfig{[]string{"rxd"}, []string{"serial"}, 0, 0},            // 10
-			&DTPinConfig{[]string{"gpio88"}, []string{"gpio"}, 88, 0},          // 11
-			&DTPinConfig{[]string{"gpio87"}, []string{"gpio"}, 87, 0},          // 12
-			&DTPinConfig{[]string{"gpio116"}, []string{"gpio"}, 116, 0},        // 13
-			&DTPinConfig{[]string{"ground-3"}, []string{"unassignable"}, 0, 0}, // 14
-			&DTPinConfig{[]string{"gpio115"}, []string{"gpio"}, 115, 0},        // 15
-			&DTPinConfig{[]string{"gpio104"}, []string{"gpio"}, 104, 0},        // 16
-			&DTPinConfig{[]string{"3.3v-2"}, []string{"unassignable"}, 0, 0},   // 17
-			&DTPinConfig{[]string{"gpio102"}, []string{"gpio"}, 102, 0},        // 18
-			&DTPinConfig{[]string{"mosi"}, []string{"spi"}, 0, 0},              // 19 - may be GPIO by default - CHECK
-			&DTPinConfig{[]string{"ground-4"}, []string{"unassignable"}, 0, 0}, // 20
-			&DTPinConfig{[]string{"miso"}, []string{"spi"}, 0, 0},              // 21 - may be GPIO by default - CHECK
-			&DTPinConfig{[]string{"gpio103"}, []string{"gpio"}, 103, 0},        // 22
-			&DTPinConfig{[]string{"sclk"}, []string{"spi"}, 0, 0},              // 23 - may be GPIO by default - CHECK
-			&DTPinConfig{[]string{"ce0"}, []string{"spi"}, 0, 0},               // 24 - also marked as CE0
-			&DTPinConfig{[]string{"ground-5"}, []string{"unassignable"}, 0, 0}, // 25
-			&DTPinConfig{[]string{"gpio118"}, []string{"gpio"}, 118, 0},        // 26
-			&DTPinConfig{[]string{"sda2"}, []string{"i2cb"}, 0, 0},             // 27
-			&DTPinConfig{[]string{"scl2"}, []string{"i2cb"}, 0, 0},             // 28
-			&DTPinConfig{[]string{"gpio101"}, []string{"gpio"}, 101, 0},        // 29
-			&DTPinConfig{[]string{"ground-6"}, []string{"unassignable"}, 0, 0}, // 30
-			&DTPinConfig{[]string{"gpio100"}, []string{"gpio"}, 100, 0},        // 31
-			&DTPinConfig{[]string{"gpio99"}, []string{"gpio"}, 99, 0},          // 32
-			&DTPinConfig{[]string{"gpio108"}, []string{"gpio"}, 108, 0},        // 33
-			&DTPinConfig{[]string{"ground-7"}, []string{"unassignable"}, 0, 0}, // 34
-			&DTPinConfig{[]string{"gpio97"}, []string{"gpio"}, 97, 0},          // 35
-			&DTPinConfig{[]string{"gpio98"}, []string{"gpio"}, 98, 0},          // 36
-			&DTPinConfig{[]string{"ain1"}, []string{"analog"}, 26, 1},          // 37 - different from Rpi
-			&DTPinConfig{[]string{"1.8v"}, []string{"unassignable"}, 0, 0},     // 38 - different from Rpi
-			&DTPinConfig{[]string{"ground-8"}, []string{"unassignable"}, 0, 0}, // 39 - different from Rpi
-			&DTPinConfig{[]string{"ain0"}, []string{"analog"}, 21, 0},          // 40 - different from Rpi
+			{[]string{"3.3v-1"}, []string{"unassignable"}, 0, 0},   // 1
+			{[]string{"5v-1"}, []string{"unassignable"}, 0, 0},     // 2
+			{[]string{"sda1"}, []string{"i2ca"}, 0, 0},             // 3
+			{[]string{"5v-2"}, []string{"unassignable"}, 0, 0},     // 4
+			{[]string{"scl1"}, []string{"i2ca"}, 0, 0},             // 5
+			{[]string{"ground-1"}, []string{"unassignable"}, 0, 0}, // 6
+			{[]string{"gpio83"}, []string{"gpio"}, 83, 0},          // 7
+			{[]string{"txd"}, []string{"serial"}, 0, 0},            // 8
+			{[]string{"ground-2"}, []string{"unassignable"}, 0, 0}, // 9
+			{[]string{"rxd"}, []string{"serial"}, 0, 0},            // 10
+			{[]string{"gpio88"}, []string{"gpio"}, 88, 0},          // 11
+			{[]string{"gpio87"}, []string{"gpio"}, 87, 0},          // 12
+			{[]string{"gpio116"}, []string{"gpio"}, 116, 0},        // 13
+			{[]string{"ground-3"}, []string{"unassignable"}, 0, 0}, // 14
+			{[]string{"gpio115"}, []string{"gpio"}, 115, 0},        // 15
+			{[]string{"gpio104"}, []string{"gpio"}, 104, 0},        // 16
+			{[]string{"3.3v-2"}, []string{"unassignable"}, 0, 0},   // 17
+			{[]string{"gpio102"}, []string{"gpio"}, 102, 0},        // 18
+			{[]string{"mosi"}, []string{"spi"}, 0, 0},              // 19 - may be GPIO by default - CHECK
+			{[]string{"ground-4"}, []string{"unassignable"}, 0, 0}, // 20
+			{[]string{"miso"}, []string{"spi"}, 0, 0},              // 21 - may be GPIO by default - CHECK
+			{[]string{"gpio103"}, []string{"gpio"}, 103, 0},        // 22
+			{[]string{"sclk"}, []string{"spi"}, 0, 0},              // 23 - may be GPIO by default - CHECK
+			{[]string{"ce0"}, []string{"spi"}, 0, 0},               // 24 - also marked as CE0
+			{[]string{"ground-5"}, []string{"unassignable"}, 0, 0}, // 25
+			{[]string{"gpio118"}, []string{"gpio"}, 118, 0},        // 26
+			{[]string{"sda2"}, []string{"i2cb"}, 0, 0},             // 27
+			{[]string{"scl2"}, []string{"i2cb"}, 0, 0},             // 28
+			{[]string{"gpio101"}, []string{"gpio"}, 101, 0},        // 29
+			{[]string{"ground-6"}, []string{"unassignable"}, 0, 0}, // 30
+			{[]string{"gpio100"}, []string{"gpio"}, 100, 0},        // 31
+			{[]string{"gpio99"}, []string{"gpio"}, 99, 0},          // 32
+			{[]string{"gpio108"}, []string{"gpio"}, 108, 0},        // 33
+			{[]string{"ground-7"}, []string{"unassignable"}, 0, 0}, // 34
+			{[]string{"gpio97"}, []string{"gpio"}, 97, 0},          // 35
+			{[]string{"gpio98"}, []string{"gpio"}, 98, 0},          // 36
+			{[]string{"ain1"}, []string{"analog"}, 26, 1},          // 37 - different from Rpi
+			{[]string{"1.8v"}, []string{"unassignable"}, 0, 0},     // 38 - different from Rpi
+			{[]string{"ground-8"}, []string{"unassignable"}, 0, 0}, // 39 - different from Rpi
+			{[]string{"ain0"}, []string{"analog"}, 21, 0},          // 40 - different from Rpi
 		}
 	case 2:
 		d.pinConfigs = []*DTPinConfig{
 			// dummy placeholder for "pin 0"
-			&DTPinConfig{[]string{"dummy"}, []string{"unassignable"}, 0, 0}, // 0 - spacer
+			{[]string{"dummy"}, []string{"unassignable"}, 0, 0}, // 0 - spacer
 
 			// Odroid has a mostly Raspberry Pi compatible header (40-pin), except GPIO numbers are different,
 			// and an analog input is available.
-			&DTPinConfig{[]string{"3.3v-1"}, []string{"unassignable"}, 0, 0},   // 1
-			&DTPinConfig{[]string{"5v-1"}, []string{"unassignable"}, 0, 0},     // 2
-			&DTPinConfig{[]string{"sda1"}, []string{"i2ca"}, 0, 0},             // 3
-			&DTPinConfig{[]string{"5v-2"}, []string{"unassignable"}, 0, 0},     // 4
-			&DTPinConfig{[]string{"scl1"}, []string{"i2ca"}, 0, 0},             // 5
-			&DTPinConfig{[]string{"ground-1"}, []string{"unassignable"}, 0, 0}, // 6
-			&DTPinConfig{[]string{"gpio249"}, []string{"gpio"}, 249, 0},        // 7
-			&DTPinConfig{[]string{"txd"}, []string{"serial"}, 0, 0},            // 8
-			&DTPinConfig{[]string{"ground-2"}, []string{"unassignable"}, 0, 0}, // 9
-			&DTPinConfig{[]string{"rxd"}, []string{"serial"}, 0, 0},            // 10
-			&DTPinConfig{[]string{"gpio247"}, []string{"gpio"}, 247, 0},        // 11
-			&DTPinConfig{[]string{"gpio238"}, []string{"gpio"}, 238, 0},        // 12
-			&DTPinConfig{[]string{"gpio239"}, []string{"gpio"}, 239, 0},        // 13
-			&DTPinConfig{[]string{"ground-3"}, []string{"unassignable"}, 0, 0}, // 14
-			&DTPinConfig{[]string{"gpio237"}, []string{"gpio"}, 237, 0},        // 15
-			&DTPinConfig{[]string{"gpio236"}, []string{"gpio"}, 236, 0},        // 16
-			&DTPinConfig{[]string{"3.3v-2"}, []string{"unassignable"}, 0, 0},   // 17
-			&DTPinConfig{[]string{"gpio233"}, []string{"gpio"}, 233, 0},        // 18
-			&DTPinConfig{[]string{"gpio235"}, []string{"gpio"}, 235, 0},        // 19 - may be GPIO by default - CHECK
-			&DTPinConfig{[]string{"ground-4"}, []string{"unassignable"}, 0, 0}, // 20
-			&DTPinConfig{[]string{"gpio232"}, []string{"gpio"}, 232, 0},        // 21
-			&DTPinConfig{[]string{"gpio231"}, []string{"gpio"}, 231, 0},        // 22
-			&DTPinConfig{[]string{"gpio230"}, []string{"gpio"}, 230, 0},        // 23
-			&DTPinConfig{[]string{"gpio229"}, []string{"gpio"}, 229, 0},        // 24
-			&DTPinConfig{[]string{"ground-5"}, []string{"unassignable"}, 0, 0}, // 25
-			&DTPinConfig{[]string{"gpio225"}, []string{"gpio"}, 225, 0},        // 26
-			&DTPinConfig{[]string{"sda2"}, []string{"i2cb"}, 0, 0},             // 27
-			&DTPinConfig{[]string{"scl2"}, []string{"i2cb"}, 0, 0},             // 28
-			&DTPinConfig{[]string{"gpio228"}, []string{"gpio"}, 228, 0},        // 29
-			&DTPinConfig{[]string{"ground-6"}, []string{"unassignable"}, 0, 0}, // 30
-			&DTPinConfig{[]string{"gpio219"}, []string{"gpio"}, 219, 0},        // 31
-			&DTPinConfig{[]string{"gpio224"}, []string{"gpio"}, 224, 0},        // 32
-			&DTPinConfig{[]string{"gpio234"}, []string{"gpio"}, 234, 0},        // 33
-			&DTPinConfig{[]string{"ground-7"}, []string{"unassignable"}, 0, 0}, // 34
-			&DTPinConfig{[]string{"gpio214"}, []string{"gpio"}, 214, 0},        // 35
-			&DTPinConfig{[]string{"gpio218"}, []string{"gpio"}, 218, 0},        // 36
-			&DTPinConfig{[]string{"ain1"}, []string{"analog"}, 26, 1},          // 37 - different from Rpi
-			&DTPinConfig{[]string{"1.8v"}, []string{"unassignable"}, 0, 0},     // 38 - different from Rpi
-			&DTPinConfig{[]string{"ground-8"}, []string{"unassignable"}, 0, 0}, // 39 - different from Rpi
-			&DTPinConfig{[]string{"ain0"}, []string{"analog"}, 21, 0},          // 40 - different from Rpi
+			{[]string{"3.3v-1"}, []string{"unassignable"}, 0, 0},   // 1
+			{[]string{"5v-1"}, []string{"unassignable"}, 0, 0},     // 2
+			{[]string{"sda1"}, []string{"i2ca"}, 0, 0},             // 3
+			{[]string{"5v-2"}, []string{"unassignable"}, 0, 0},     // 4
+			{[]string{"scl1"}, []string{"i2ca"}, 0, 0},             // 5
+			{[]string{"ground-1"}, []string{"unassignable"}, 0, 0}, // 6
+			{[]string{"gpio249"}, []string{"gpio"}, 249, 0},        // 7
+			{[]string{"txd"}, []string{"serial"}, 0, 0},            // 8
+			{[]string{"ground-2"}, []string{"unassignable"}, 0, 0}, // 9
+			{[]string{"rxd"}, []string{"serial"}, 0, 0},            // 10
+			{[]string{"gpio247"}, []string{"gpio"}, 247, 0},        // 11
+			{[]string{"gpio238"}, []string{"gpio"}, 238, 0},        // 12
+			{[]string{"gpio239"}, []string{"gpio"}, 239, 0},        // 13
+			{[]string{"ground-3"}, []string{"unassignable"}, 0, 0}, // 14
+			{[]string{"gpio237"}, []string{"gpio"}, 237, 0},        // 15
+			{[]string{"gpio236"}, []string{"gpio"}, 236, 0},        // 16
+			{[]string{"3.3v-2"}, []string{"unassignable"}, 0, 0},   // 17
+			{[]string{"gpio233"}, []string{"gpio"}, 233, 0},        // 18
+			{[]string{"gpio235"}, []string{"gpio"}, 235, 0},        // 19 - may be GPIO by default - CHECK
+			{[]string{"ground-4"}, []string{"unassignable"}, 0, 0}, // 20
+			{[]string{"gpio232"}, []string{"gpio"}, 232, 0},        // 21
+			{[]string{"gpio231"}, []string{"gpio"}, 231, 0},        // 22
+			{[]string{"gpio230"}, []string{"gpio"}, 230, 0},        // 23
+			{[]string{"gpio229"}, []string{"gpio"}, 229, 0},        // 24
+			{[]string{"ground-5"}, []string{"unassignable"}, 0, 0}, // 25
+			{[]string{"gpio225"}, []string{"gpio"}, 225, 0},        // 26
+			{[]string{"sda2"}, []string{"i2cb"}, 0, 0},             // 27
+			{[]string{"scl2"}, []string{"i2cb"}, 0, 0},             // 28
+			{[]string{"gpio228"}, []string{"gpio"}, 228, 0},        // 29
+			{[]string{"ground-6"}, []string{"unassignable"}, 0, 0}, // 30
+			{[]string{"gpio219"}, []string{"gpio"}, 219, 0},        // 31
+			{[]string{"gpio224"}, []string{"gpio"}, 224, 0},        // 32
+			{[]string{"gpio234"}, []string{"gpio"}, 234, 0},        // 33
+			{[]string{"ground-7"}, []string{"unassignable"}, 0, 0}, // 34
+			{[]string{"gpio214"}, []string{"gpio"}, 214, 0},        // 35
+			{[]string{"gpio218"}, []string{"gpio"}, 218, 0},        // 36
+			{[]string{"ain1"}, []string{"analog"}, 26, 1},          // 37 - different from Rpi
+			{[]string{"1.8v"}, []string{"unassignable"}, 0, 0},     // 38 - different from Rpi
+			{[]string{"ground-8"}, []string{"unassignable"}, 0, 0}, // 39 - different from Rpi
+			{[]string{"ain0"}, []string{"analog"}, 21, 0},          // 40 - different from Rpi
 		}
 	}
 }

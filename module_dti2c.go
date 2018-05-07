@@ -3,12 +3,12 @@
 package hwio
 
 // references:
-// - http://datko.net/2013/11/03/bbb_i2c/
-// - http://elinux.org/Interfacing_with_I2C_Devices
-// - http://grokbase.com/t/gg/golang-nuts/1296kz4tkg/go-nuts-how-to-call-linux-kernel-method-i2c-smbus-write-byte-from-go
-// - http://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/i2c
-// - https://bitbucket.org/gmcbay/i2c/src/1235f1776ee749f0eaeb6de69d8804a6dd70d9d5/i2c_bus.go?at=master
-// - http://derekmolloy.ie/beaglebone/beaglebone-an-i2c-tutorial-interfacing-to-a-bma180-accelerometer/'
+// http://datko.net/2013/11/03/bbb_i2c/
+// http://elinux.org/Interfacing_with_I2C_Devices
+// http://grokbase.com/t/gg/golang-nuts/1296kz4tkg/go-nuts-how-to-call-linux-kernel-method-i2c-smbus-write-byte-from-go
+// http://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/i2c
+// https://bitbucket.org/gmcbay/i2c/src/1235f1776ee749f0eaeb6de69d8804a6dd70d9d5/i2c_bus.go?at=master
+// http://derekmolloy.ie/beaglebone/beaglebone-an-i2c-tutorial-interfacing-to-a-bma180-accelerometer/'
 
 import (
 	"fmt"
@@ -34,26 +34,26 @@ type DTI2CModule struct {
 }
 
 // Data that is passed to/from ioctl calls
-type i2c_smbus_ioctl_data struct {
-	read_write uint8
-	command    uint8
-	size       int
-	data       uintptr
+type i2cSmbusIoctlData struct {
+	readWrite uint8
+	command   uint8
+	size      int
+	data      uintptr
 }
 
 // Constants used by ioctl, from i2c-dev.h
 const (
-	I2C_SMBUS_READ           = 1
-	I2C_SMBUS_WRITE          = 0
-	I2C_SMBUS_BYTE_DATA      = 2
-	I2C_SMBUS_I2C_BLOCK_DATA = 8
-	I2C_SMBUS_BLOCK_MAX      = 32
+	I2CSMBusRead         = 1
+	I2CSMBusWrite        = 0
+	I2CSMBusByteData     = 2
+	I2CSMBusI2CBlockData = 8
+	I2CSMBusBlockMax     = 32
 
 	// Talk to bus
-	I2C_SMBUS = 0x0720
+	I2CSMBus = 0x0720
 
 	// Set bus slave
-	I2C_SLAVE = 0x0703
+	I2CSlave = 0x0703
 )
 
 func NewDTI2CModule(name string) (result *DTI2CModule) {
@@ -69,7 +69,7 @@ func (module *DTI2CModule) SetOptions(options map[string]interface{}) error {
 	// get the device
 	vd := options["device"]
 	if vd == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'device' value", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'device' value", module.GetName())
 	}
 
 	module.deviceFile = vd.(string)
@@ -77,7 +77,7 @@ func (module *DTI2CModule) SetOptions(options map[string]interface{}) error {
 	// get the pins
 	vp := options["pins"]
 	if vp == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 
 	module.definedPins = vp.(DTI2CModulePins)
@@ -89,7 +89,6 @@ func (module *DTI2CModule) SetOptions(options map[string]interface{}) error {
 func (module *DTI2CModule) Enable() error {
 	// Assign the pins so nothing else can allocate them.
 	for _, pin := range module.definedPins {
-		// fmt.Printf("assigning pin %d\n", pin)
 		AssignPin(pin, module)
 	}
 
@@ -146,14 +145,14 @@ func (device *DTI2CDevice) Write(command byte, data []byte) (e error) {
 
 	//	buffer := make([]byte, numBytes+2)
 
-	busData := i2c_smbus_ioctl_data{
-		read_write: I2C_SMBUS_WRITE,
-		command:    command,
-		size:       I2C_SMBUS_I2C_BLOCK_DATA,
-		data:       uintptr(unsafe.Pointer(&buffer[0])),
+	busData := i2cSmbusIoctlData{
+		readWrite: I2CSMBusWrite,
+		command:   command,
+		size:      I2CSMBusI2CBlockData,
+		data:      uintptr(unsafe.Pointer(&buffer[0])),
 	}
 
-	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2C_SMBUS, uintptr(unsafe.Pointer(&busData)))
+	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2CSMBus, uintptr(unsafe.Pointer(&busData)))
 	if err != 0 {
 		return syscall.Errno(err)
 	}
@@ -172,14 +171,14 @@ func (device *DTI2CDevice) Read(command byte, numBytes int) ([]byte, error) {
 
 	//	buffer := make([]byte, numBytes+2)
 
-	busData := i2c_smbus_ioctl_data{
-		read_write: I2C_SMBUS_READ,
-		command:    command,
-		size:       I2C_SMBUS_I2C_BLOCK_DATA,
-		data:       uintptr(unsafe.Pointer(&buffer[0])),
+	busData := i2cSmbusIoctlData{
+		readWrite: I2CSMBusRead,
+		command:   command,
+		size:      I2CSMBusI2CBlockData,
+		data:      uintptr(unsafe.Pointer(&buffer[0])),
 	}
 
-	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2C_SMBUS, uintptr(unsafe.Pointer(&busData)))
+	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2CSMBus, uintptr(unsafe.Pointer(&busData)))
 	if err != 0 {
 		return nil, syscall.Errno(err)
 	}
@@ -202,14 +201,14 @@ func (device *DTI2CDevice) ReadByte(command byte) (byte, error) {
 
 	data := uint8(0)
 
-	busData := i2c_smbus_ioctl_data{
-		read_write: I2C_SMBUS_READ,
-		command:    command,
-		size:       I2C_SMBUS_BYTE_DATA,
-		data:       uintptr(unsafe.Pointer(&data)),
+	busData := i2cSmbusIoctlData{
+		readWrite: I2CSMBusRead,
+		command:   command,
+		size:      I2CSMBusByteData,
+		data:      uintptr(unsafe.Pointer(&data)),
 	}
 
-	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2C_SMBUS, uintptr(unsafe.Pointer(&busData)))
+	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2CSMBus, uintptr(unsafe.Pointer(&busData)))
 	if err != 0 {
 		return 0, syscall.Errno(err)
 	}
@@ -226,14 +225,14 @@ func (device *DTI2CDevice) WriteByte(command byte, value byte) error {
 		return e
 	}
 
-	busData := i2c_smbus_ioctl_data{
-		read_write: I2C_SMBUS_WRITE,
-		command:    command,
-		size:       I2C_SMBUS_BYTE_DATA,
-		data:       uintptr(unsafe.Pointer(&value)),
+	busData := i2cSmbusIoctlData{
+		readWrite: I2CSMBusWrite,
+		command:   command,
+		size:      I2CSMBusByteData,
+		data:      uintptr(unsafe.Pointer(&value)),
 	}
 
-	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2C_SMBUS, uintptr(unsafe.Pointer(&busData)))
+	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2CSMBus, uintptr(unsafe.Pointer(&busData)))
 	if err != 0 {
 		return syscall.Errno(err)
 	}
@@ -242,9 +241,9 @@ func (device *DTI2CDevice) WriteByte(command byte, value byte) error {
 }
 
 func (device *DTI2CDevice) sendSlaveAddress() error {
-	_, _, enum := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2C_SLAVE, uintptr(device.address))
+	_, _, enum := syscall.Syscall(syscall.SYS_IOCTL, uintptr(device.module.fd.Fd()), I2CSlave, uintptr(device.address))
 	if enum != 0 {
-		return fmt.Errorf("Could not open I2C bus on module %s", device.module.GetName())
+		return fmt.Errorf("could not open I2C bus on module %s", device.module.GetName())
 	}
 	return nil
 }

@@ -4,7 +4,6 @@ package hwio
 // same uninitialised state.
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -33,33 +32,33 @@ func TestGetPin(t *testing.T) {
 
 	p1, e := GetPin("P1")
 	if e != nil {
-		t.Error(fmt.Sprintf("GetPin('P1') should not return an error, returned '%s'", e))
+		t.Errorf("function GetPin('P1') should not return an error, returned '%s'", e)
 	}
 	if p1 != 0 {
-		t.Error("GetPin('P0') should return 0")
+		t.Error("function GetPin('P0') should return 0")
 	}
 
 	// test for altenate name of same pin
 	p1a, e := GetPin("gpio1")
 	if e != nil {
-		t.Error(fmt.Sprintf("GetPin('gpio1') should not return an error, returned '%s'"), e)
+		t.Errorf("function GetPin('gpio1') should not return an error, returned '%s'", e)
 	}
 	if p1a != p1 {
-		t.Error(fmt.Sprintf("Expected P1 and gpio1 to be the same pin"))
+		t.Error("expected P1 and gpio1 to be the same pin")
 	}
 
 	// test case insensitivity
 	p1b, e := GetPin("GpIo1")
 	if e != nil {
-		t.Error(fmt.Sprintf("GetPin('GpIo1') should not return an error, returned '%s'"), e)
+		t.Errorf("function GetPin('GpIo1') should not return an error, returned '%s'", e)
 	}
 	if p1b != p1 {
-		t.Error(fmt.Sprintf("Expected P1 and GpIo1 to be the same pin"))
+		t.Error("expected P1 and GpIo1 to be the same pin")
 	}
 
 	_, e = GetPin("P99")
 	if e == nil {
-		t.Error("GetPin('P99') should have returned an error but didn't")
+		t.Error("function GetPin('P99') should have returned an error but didn't")
 	}
 }
 
@@ -71,11 +70,11 @@ func TestPinMode(t *testing.T) {
 	// Set pin 0 to input. We expect no error as it's GPIO
 	e := PinMode(0, INPUT)
 	if e != nil {
-		t.Error(fmt.Sprintf("GetPin('P1') should not return an error, returned '%s'", e))
+		t.Errorf("function GetPin('P1') should not return an error, returned '%s'", e)
 	}
 	m := gpio.MockGetPinMode(0)
 	if m != INPUT {
-		t.Error("Pin set to read mode is not set in the driver")
+		t.Error("pin set to read mode is not set in the driver")
 	}
 
 	// Change pin 0 to output. We expect no error in this case either, and the
@@ -83,7 +82,7 @@ func TestPinMode(t *testing.T) {
 	e = PinMode(0, OUTPUT)
 	m = gpio.MockGetPinMode(0)
 	if m != OUTPUT {
-		t.Error("Pin changed from read to write mode is not set in the driver")
+		t.Error("pin changed from read to write mode is not set in the driver")
 	}
 }
 
@@ -98,7 +97,7 @@ func TestDigitalWrite(t *testing.T) {
 
 	v := gpio.MockGetPinValue(pin2)
 	if v != LOW {
-		t.Error("After writing LOW to pin, driver should know this value")
+		t.Error("after writing LOW to pin, driver should know this value")
 	}
 
 	DigitalWrite(pin2, HIGH)
@@ -115,46 +114,46 @@ func TestDigitalRead(t *testing.T) {
 	pin1, _ := GetPin("p1")
 
 	PinMode(pin1, INPUT)
-	writePinAndCheck(t, pin1, LOW, driver)
-	writePinAndCheck(t, pin1, HIGH, driver)
+	writePinAndCheck(t, pin1, LOW)
+	writePinAndCheck(t, pin1, HIGH)
 }
 
 func getMockGPIO(t *testing.T) *testGPIOModule {
 	g, e := GetModule("gpio")
 	if e != nil {
-		t.Error(fmt.Sprintf("Fetching gpio module should not return an error, returned %s", e))
+		t.Errorf("fetching gpio module should not return an error, returned %s", e)
 	}
 	if g == nil {
-		t.Error("Could not get 'gpio' module")
+		t.Error("could not get 'gpio' module")
 	}
 
 	return g.(*testGPIOModule)
 }
 
-func writePinAndCheck(t *testing.T, pin Pin, value int, driver *TestDriver) {
+func writePinAndCheck(t *testing.T, pin Pin, value int) {
 	gpio := getMockGPIO(t)
 
 	gpio.MockSetPinValue(pin, value)
 	v, e := DigitalRead(pin)
 	if e != nil {
-		t.Error("DigitalRead returned an error")
+		t.Error("function DigitalRead returned an error")
 	}
 	if v != value {
-		t.Error(fmt.Sprintf("After writing %d to driver, DigitalRead method should return this value", value))
+		t.Errorf("after writing %d to driver, DigitalRead method should return this value", value)
 	}
 }
 
 func TestBitManipulation(t *testing.T) {
 	v := UInt16FromUInt8(0x45, 0x65)
 	if v != 0x4565 {
-		t.Error(fmt.Sprintf("UInt16FromUInt8 does not work correctly, expected 0x4565, got %04x", v))
+		t.Errorf("function UInt16FromUInt8 does not work correctly, expected 0x4565, got %04x", v)
 	}
 }
 
 func TestCpuInfo(t *testing.T) {
 	s := CpuInfo(0, "processor")
 	if s != "0" {
-		t.Error(fmt.Sprintf("Expected 'processor' property of processor 0 to be 0 from CpuInfo, got '%s'", s))
+		t.Errorf("expected 'processor' property of processor 0 to be 0 from CpuInfo, got '%s'", s)
 	}
 }
 
@@ -163,24 +162,24 @@ func TestAnalogRead(t *testing.T) {
 
 	ap1, e := GetPin("p11")
 	if e != nil {
-		t.Error(fmt.Sprintf("GetPin('p11') should not return an error, returned '%s'", e))
+		t.Errorf("function GetPin('p11') should not return an error, returned '%s'", e)
 	}
 
 	v, e := AnalogRead(ap1)
 	if e != nil {
-		t.Error(fmt.Sprintf("After reading from pin %d, got an unexpected error: %s", ap1, e))
+		t.Errorf("after reading from pin %d, got an unexpected error: %s", ap1, e)
 	}
 	if v != 1 {
-		t.Error(fmt.Sprintf("After reading from pin %d, did not get the expected value 1, got %d", ap1, v))
+		t.Errorf("after reading from pin %d, did not get the expected value 1, got %d", ap1, v)
 	}
 
 	ap2, _ := GetPin("p12")
 	v, _ = AnalogRead(ap2)
 	if e != nil {
-		t.Error(fmt.Sprintf("After reading from pin %d, got an unexpected error: %s", ap2, e))
+		t.Errorf("after reading from pin %d, got an unexpected error: %s", ap2, e)
 	}
 	if v != 1000 {
-		t.Error(fmt.Sprintf("After reading from pin %d, did not get the expected value 1000, got %d", ap2, v))
+		t.Errorf("after reading from pin %d, did not get the expected value 1000, got %d", ap2, v)
 	}
 }
 

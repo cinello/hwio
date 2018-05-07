@@ -53,7 +53,7 @@ func NewBBAnalogModule(name string) (result *BBAnalogModule) {
 func (module *BBAnalogModule) SetOptions(options map[string]interface{}) error {
 	v := options["pins"]
 	if v == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 
 	module.definedPins = v.(BBAnalogModulePinDefMap)
@@ -84,7 +84,7 @@ func (module *BBAnalogModule) Enable() error {
 			return e
 		}
 		if path == "" {
-			return errors.New("Could not locate /sys/devices/ocp.*/helper.*/AIN0")
+			return errors.New("could not locate /sys/devices/ocp.*/helper.*/AIN0")
 		}
 
 		// remove AIN0 to get the path where these files are
@@ -93,7 +93,7 @@ func (module *BBAnalogModule) Enable() error {
 		module.analogInitialised = true
 
 		// attempt to assign all pins to this module
-		for pin, _ := range module.definedPins {
+		for pin := range module.definedPins {
 			// attempt to assign this pin for this module.
 			e = AssignPin(pin, module)
 			if e != nil {
@@ -118,7 +118,7 @@ func (module *BBAnalogModule) hasCapeBoneIIO(path string) bool {
 // disables module and release any pins assigned.
 func (module *BBAnalogModule) Disable() error {
 	// Unassign any pins we may have assigned
-	for pin, _ := range module.definedPins {
+	for pin := range module.definedPins {
 		// attempt to assign this pin for this module.
 		UnassignPin(pin)
 	}
@@ -157,7 +157,7 @@ func (module *BBAnalogModule) AnalogRead(pin Pin) (int, error) {
 func (module *BBAnalogModule) makeOpenAnalogPin(pin Pin) (*BBAnalogModuleOpenPin, error) {
 	p := module.definedPins[pin]
 	if p == nil {
-		return nil, fmt.Errorf("Pin %d is not known to analog module", pin)
+		return nil, fmt.Errorf("pin %d is not known to analog module", pin)
 	}
 
 	path := module.analogValueFilesPath + fmt.Sprintf("AIN%d", p.analogLogical)

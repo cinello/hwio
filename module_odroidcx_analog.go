@@ -49,7 +49,7 @@ func NewODroidCXAnalogModule(name string) (result *ODroidCXAnalogModule) {
 func (module *ODroidCXAnalogModule) SetOptions(options map[string]interface{}) error {
 	v := options["pins"]
 	if v == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 
 	module.definedPins = v.(ODroidCXAnalogModulePinDefMap)
@@ -63,7 +63,7 @@ func (module *ODroidCXAnalogModule) Enable() error {
 		module.analogInitialised = true
 
 		// attempt to assign all pins to this module
-		for pin, _ := range module.definedPins {
+		for pin := range module.definedPins {
 			// attempt to assign this pin for this module.
 			e := AssignPin(pin, module)
 			if e != nil {
@@ -81,7 +81,7 @@ func (module *ODroidCXAnalogModule) Enable() error {
 // disables module and release any pins assigned.
 func (module *ODroidCXAnalogModule) Disable() error {
 	// Unassign any pins we may have assigned
-	for pin, _ := range module.definedPins {
+	for pin := range module.definedPins {
 		// attempt to assign this pin for this module.
 		UnassignPin(pin)
 	}
@@ -100,7 +100,7 @@ func (module *ODroidCXAnalogModule) GetName() string {
 func (module *ODroidCXAnalogModule) AnalogRead(pin Pin) (value int, e error) {
 	openPin := module.openPins[pin]
 	if openPin == nil {
-		return 0, errors.New("Pin is being read for analog value but has not been opened. Have you called PinMode?")
+		return 0, errors.New("pin is being read for analog value but has not been opened, call PinMode")
 	}
 	return openPin.analogGetValue()
 }
@@ -108,7 +108,7 @@ func (module *ODroidCXAnalogModule) AnalogRead(pin Pin) (value int, e error) {
 func (module *ODroidCXAnalogModule) makeOpenAnalogPin(pin Pin) error {
 	p := module.definedPins[pin]
 	if p == nil {
-		return fmt.Errorf("Pin %d is not known to analog module", pin)
+		return fmt.Errorf("pin %d is not known to analog module", pin)
 	}
 
 	path := fmt.Sprintf("/sys/class/saradc/saradc_ch%d", p.analogLogical)

@@ -17,7 +17,6 @@ func main() {
 	gsclkPin, _ := hwio.GetPin("P9.14")
 	blankPin, _ := hwio.GetPin("P9.15")
 
-	fmt.Printf("Pins are: sin=%d, sclk=%d, xlat=%d, gsclk=%d, blank=%d", sinPin, sclkPin, xlatPin, gsclkPin, blankPin)
 	// Make them all outputs
 	e := hwio.PinMode(sinPin, hwio.OUTPUT)
 	if e == nil {

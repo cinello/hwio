@@ -45,7 +45,7 @@ func NewDTGPIOModule(name string) (result *DTGPIOModule) {
 func (module *DTGPIOModule) SetOptions(options map[string]interface{}) error {
 	v := options["pins"]
 	if v == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 
 	module.definedPins = v.(DTGPIOModulePinDefMap)
@@ -71,7 +71,7 @@ func (module *DTGPIOModule) GetName() string {
 
 func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 	if module.definedPins[pin] == nil {
-		return fmt.Errorf("Pin %d is not known as a GPIO pin", pin)
+		return fmt.Errorf("pin %d is not known as a GPIO pin", pin)
 	}
 
 	// close if already open and the new mode in different
@@ -97,7 +97,6 @@ func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 	}
 
 	if mode == OUTPUT {
-		fmt.Printf("about to set pin %d to output\n", pin)
 		e = openPin.gpioDirection("out")
 		if e != nil {
 			return e
@@ -125,7 +124,7 @@ func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 func (module *DTGPIOModule) DigitalWrite(pin Pin, value int) (e error) {
 	openPin := module.openPins[pin]
 	if openPin == nil {
-		return errors.New("Pin is being written but has not been opened. Have you called PinMode?")
+		return errors.New("pin is being written but has not been opened, called PinMode")
 	}
 	// 	if a.pinIOMode != OUTPUT {
 	// 		return errors.New(fmt.Sprintf("DigitalWrite: pin %d mode is not set for output", pin))
@@ -137,7 +136,7 @@ func (module *DTGPIOModule) DigitalWrite(pin Pin, value int) (e error) {
 func (module *DTGPIOModule) DigitalRead(pin Pin) (value int, e error) {
 	openPin := module.openPins[pin]
 	if openPin == nil {
-		return 0, errors.New("Pin is being read from but has not been opened. Have you called PinMode?")
+		return 0, errors.New("pin is being read from but has not been opened, call PinMode")
 	}
 	// 	if a.pinIOMode != INPUT && a.pinIOMode != INPUT_PULLUP && a.pinIOMode != INPUT_PULLDOWN {
 	// 		e = errors.New(fmt.Sprintf("DigitalRead: pin %d mode not set for input", pin))
@@ -150,7 +149,7 @@ func (module *DTGPIOModule) DigitalRead(pin Pin) (value int, e error) {
 func (module *DTGPIOModule) ClosePin(pin Pin) error {
 	openPin := module.openPins[pin]
 	if openPin == nil {
-		return errors.New("Pin is being closed but has not been opened. Have you called PinMode?")
+		return errors.New("pin is being closed but has not been opened, call PinMode")
 	}
 	e := openPin.gpioUnexport()
 	if e != nil {
@@ -168,7 +167,7 @@ func (module *DTGPIOModule) ClosePin(pin Pin) error {
 func (module *DTGPIOModule) makeOpenGPIOPin(pin Pin) (*DTGPIOModuleOpenPin, error) {
 	p := module.definedPins[pin]
 	if p == nil {
-		return nil, fmt.Errorf("Pin %d is not known to GPIO module", pin)
+		return nil, fmt.Errorf("pin %d is not known to GPIO module", pin)
 	}
 
 	result := &DTGPIOModuleOpenPin{pin: pin, gpioLogical: p.gpioLogical}
@@ -251,7 +250,6 @@ func (op *DTGPIOModuleOpenPin) gpioGetValue() (int, error) {
 // Set the value, Expects HIGH or LOW
 func (op *DTGPIOModuleOpenPin) gpioSetValue(value int) error {
 	if op.valueFile == nil {
-		fmt.Printf("value file no set\n")
 		return errors.New("value file is not defined")
 	}
 

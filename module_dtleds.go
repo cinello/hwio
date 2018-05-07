@@ -49,7 +49,7 @@ func (m *DTLEDModule) SetOptions(options map[string]interface{}) error {
 
 		return nil
 	} else {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' value", m.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' value", m.GetName())
 	}
 
 }

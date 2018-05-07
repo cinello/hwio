@@ -20,7 +20,7 @@ func (module *PreassignedModule) SetOptions(options map[string]interface{}) erro
 	// get the pins
 	vp := options["pins"]
 	if vp == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 	module.pins = vp.(PinList)
 

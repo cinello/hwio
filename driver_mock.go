@@ -221,7 +221,7 @@ func (module *testGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 
 func (module *testGPIOModule) DigitalWrite(pin Pin, value int) error {
 	if module.pinModes[pin] == 0 {
-		return fmt.Errorf("Pin %d has not had mode set", pin)
+		return fmt.Errorf("pin %d has not had mode set", pin)
 	}
 	module.pinValues[pin] = value
 	return nil

@@ -7,6 +7,7 @@ package hwio
 import (
 	"errors"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -40,19 +41,15 @@ type assignedPin struct {
 // to determine if the request is valid given the assigned properties of the pin.
 var assignedPins map[Pin]*assignedPin
 
-// If set to true, functions should test that their constraints are met.
-// e.g. test that the pin is capable of doing what is asked. This can be set
-// with SetErrorChecking(). Setting to false bypasses checks for performance.
-// By default turned on, which is a better default for beginners.
-var errorChecking bool = true
-
 // init() attempts to determine from the environment what the driver is. The
 // intent is that the consumer of the library would not generally have to worry
 // about it, it would just work. If it cannot determine the driver, it doesn't
 // set the driver to anything.
 func init() {
 	assignedPins = make(map[Pin]*assignedPin)
-	determineDriver()
+	if err := determineDriver(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func fileExists(name string) bool {
@@ -66,16 +63,16 @@ func fileExists(name string) bool {
 
 // Work out the driver from environment if we can. If we have any problems,
 // don't generate an error, just return with the driver not set.
-func determineDriver() {
+func determineDriver() error {
 	drivers := [...]HardwareDriver{NewBeagleboneBlackDTDriver(), NewRaspPiDTDriver(), NewOdroidCXDriver()}
 	for _, d := range drivers {
 		if d.MatchesHardwareConfig() {
 			SetDriver(d)
-			return
+			return nil
 		}
 	}
 
-	fmt.Printf("Unable to select a suitable driver for this board.\n")
+	return fmt.Errorf("Unable to select a suitable driver for this board.\n")
 }
 
 // Check if the driver is assigned. If not, return an error to indicate that,
@@ -89,13 +86,14 @@ func assertDriver() error {
 
 // Set the driver. Also calls Init on the driver, and loads the capabilities
 // of the device.
-func SetDriver(d HardwareDriver) {
+func SetDriver(d HardwareDriver) error {
 	driver = d
 	e := driver.Init()
 	if e != nil {
-		fmt.Printf("Could not initialise driver: %s", e)
+		return fmt.Errorf("could not initialise driver: %s", e)
 	}
 	definedPins = driver.PinMap()
+	return nil
 }
 
 // Retrieve the current hardware driver.
@@ -137,7 +135,7 @@ func GetPin(pinName string) (Pin, error) {
 		}
 	}
 
-	return Pin(0), fmt.Errorf("Could not find a pin called %s", pinName)
+	return Pin(0), fmt.Errorf("could not find a pin called %s", pinName)
 }
 
 // Shortcut for calling GetPin and then PinMode.
@@ -151,11 +149,6 @@ func GetPinWithMode(cname string, mode PinIOMode) (pin Pin, e error) {
 	return p, e
 }
 
-// Set error checking. This should be called before pin assignments.
-func SetErrorChecking(check bool) {
-	errorChecking = check
-}
-
 // Helper function to get GPIO module
 func GetGPIOModule() (GPIOModule, error) {
 	m, e := GetModule("gpio")
@@ -164,7 +157,7 @@ func GetGPIOModule() (GPIOModule, error) {
 	}
 
 	if m == nil {
-		return nil, errors.New("Driver does not support GPIO")
+		return nil, errors.New("driver does not support GPIO")
 	}
 
 	return m.(GPIOModule), nil
@@ -204,7 +197,7 @@ func ClosePin(pin Pin) error {
 // an error is generated. ethod is public in case it is needed to hack around default driver settings.
 func AssignPin(pin Pin, module Module) error {
 	if a := assignedPins[pin]; a != nil {
-		return fmt.Errorf("Pin %d is already assigned to module %s", pin, a.module.GetName())
+		return fmt.Errorf("pin %d is already assigned to module %s", pin, a.module.GetName())
 	}
 	assignedPins[pin] = &assignedPin{pin, module}
 	return nil
@@ -253,7 +246,7 @@ func DigitalWrite(pin Pin, value int) (e error) {
 
 // Read a value from a digital pin
 func DigitalRead(pin Pin) (result int, e error) {
-	// @todo consider memoizing
+	// @todo consider memorizing
 	gpio, e := GetGPIOModule()
 	if e != nil {
 		return 0, e
@@ -300,7 +293,7 @@ func GetAnalogModule() (AnalogModule, error) {
 	}
 
 	if m == nil {
-		return nil, errors.New("Driver does not support analog")
+		return nil, errors.New("driver does not support analog")
 	}
 
 	return m.(AnalogModule), nil
@@ -413,7 +406,7 @@ func WriteUIntToPins(value uint32, pins []Pin) error {
 
 	bit := uint32(0)
 	v := value
-	mask := uint32(1) << uint32((len(pins) - 1))
+	mask := uint32(1) << uint32(len(pins)-1)
 	for i := uint32(0); i < uint32(len(pins)); i++ {
 		bit = v & mask
 		if bit != 0 {
@@ -421,7 +414,6 @@ func WriteUIntToPins(value uint32, pins []Pin) error {
 		}
 		v = v << 1
 		// write to data pin
-		//		fmt.Printf("Writing %s to pin %s\n", bit, pins[i])
 		e := DigitalWrite(pins[i], int(bit))
 		if e != nil {
 			return e
@@ -432,7 +424,6 @@ func WriteUIntToPins(value uint32, pins []Pin) error {
 
 // Write a string to a file and close it again.
 func WriteStringToFile(filename string, value string) error {
-	//	fmt.Printf("writing %s to file %s\n", value, filename)
 	f, e := os.OpenFile(filename, os.O_WRONLY|os.O_TRUNC, 0666)
 	if e != nil {
 		return e

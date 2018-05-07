@@ -64,7 +64,7 @@ func NewBBPWMModule(name string) (result *BBPWMModule) {
 func (module *BBPWMModule) SetOptions(options map[string]interface{}) error {
 	v := options["pins"]
 	if v == nil {
-		return fmt.Errorf("Module '%s' SetOptions() did not get 'pins' values", module.GetName())
+		return fmt.Errorf("module '%s' SetOptions() did not get 'pins' values", module.GetName())
 	}
 
 	module.definedPins = v.(BBPWMModulePinDefMap)
@@ -95,7 +95,7 @@ func (module *BBPWMModule) GetName() string {
 // module will not by default allocate all pins, since there are a few.
 func (module *BBPWMModule) EnablePin(pin Pin, enabled bool) error {
 	if module.definedPins[pin] == nil {
-		return fmt.Errorf("Pin %d is not known as a PWM pin on module %s", pin, module.GetName())
+		return fmt.Errorf("pin %d is not known as a PWM pin on module %s", pin, module.GetName())
 	}
 
 	openPin := module.openPins[pin]
@@ -122,7 +122,7 @@ func (module *BBPWMModule) EnablePin(pin Pin, enabled bool) error {
 func (module *BBPWMModule) SetPeriod(pin Pin, ns int64) error {
 	openPin := module.openPins[pin]
 	if openPin == nil {
-		return fmt.Errorf("PWM pin is being written but is not enabled. Have you called EnablePin?")
+		return fmt.Errorf("the PWM pin is being written but is not enabled, call EnablePin")
 	}
 
 	return openPin.setPeriod(ns)
@@ -132,7 +132,7 @@ func (module *BBPWMModule) SetPeriod(pin Pin, ns int64) error {
 func (module *BBPWMModule) SetDuty(pin Pin, ns int64) error {
 	openPin := module.openPins[pin]
 	if openPin == nil {
-		return fmt.Errorf("PWM pin is being written but is not enabled. Have you called EnablePin?")
+		return fmt.Errorf("the PWM pin is being written but is not enabled, call EnablePin")
 	}
 
 	return openPin.setDuty(ns)
@@ -142,7 +142,7 @@ func (module *BBPWMModule) SetDuty(pin Pin, ns int64) error {
 func (module *BBPWMModule) makeOpenPin(pin Pin) (*BBPWMModuleOpenPin, error) {
 	p := module.definedPins[pin]
 	if p == nil {
-		return nil, fmt.Errorf("Pin %d is not known to PWM module %s", pin, module.GetName())
+		return nil, fmt.Errorf("pin %d is not known to PWM module %s", pin, module.GetName())
 	}
 
 	e := AssignPin(pin, module)
