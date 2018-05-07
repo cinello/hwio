@@ -186,6 +186,7 @@ func (module *BBPWMModule) ensureSlot(item string) error {
 	if e != nil {
 		return e
 	}
+	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {

@@ -30,6 +30,7 @@ func loadCpuInfo() {
 	if e != nil {
 		return
 	}
+	defer file.Close()
 
 	currentCpu := ""
 
