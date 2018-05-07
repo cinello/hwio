@@ -3,7 +3,7 @@ package hwio
 // A driver for Odroid C1's running Ubuntu 14.04 with Linux kernel 3.8 or higher.
 //
 // Known issues:
-// - INPUT_PULLUP and INPUT_PULLDOWN not implemented yet.
+// - InputPullUp and InputPullDown not implemented yet.
 // - no support yet for SPI, serial, I2C
 //
 // GPIO are 3.3V, analog is 1.8V

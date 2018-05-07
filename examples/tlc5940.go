@@ -18,18 +18,18 @@ func main() {
 	blankPin, _ := hwio.GetPin("P9.15")
 
 	// Make them all outputs
-	e := hwio.PinMode(sinPin, hwio.OUTPUT)
+	e := hwio.PinMode(sinPin, hwio.Output)
 	if e == nil {
-		hwio.PinMode(sclkPin, hwio.OUTPUT)
+		hwio.PinMode(sclkPin, hwio.Output)
 	}
 	if e == nil {
-		hwio.PinMode(xlatPin, hwio.OUTPUT)
+		hwio.PinMode(xlatPin, hwio.Output)
 	}
 	if e == nil {
-		hwio.PinMode(gsclkPin, hwio.OUTPUT)
+		hwio.PinMode(gsclkPin, hwio.Output)
 	}
 	if e == nil {
-		hwio.PinMode(blankPin, hwio.OUTPUT)
+		hwio.PinMode(blankPin, hwio.Output)
 	}
 	if e != nil {
 		fmt.Printf("Could not initialise pins: %s", e)
@@ -37,21 +37,21 @@ func main() {
 	}
 
 	// set clocks low
-	hwio.DigitalWrite(sclkPin, hwio.LOW)
-	hwio.DigitalWrite(xlatPin, hwio.LOW)
-	hwio.DigitalWrite(gsclkPin, hwio.LOW)
+	hwio.DigitalWrite(sclkPin, hwio.Low)
+	hwio.DigitalWrite(xlatPin, hwio.Low)
+	hwio.DigitalWrite(gsclkPin, hwio.Low)
 
 	// run GS clock in it's own space
-	hwio.DigitalWrite(blankPin, hwio.HIGH)
-	hwio.DigitalWrite(blankPin, hwio.LOW)
+	hwio.DigitalWrite(blankPin, hwio.High)
+	hwio.DigitalWrite(blankPin, hwio.Low)
 	clockData(gsclkPin)
 
 	for b := 0; b < 4096; b++ {
 		writeData(uint(b), sinPin, sclkPin, xlatPin)
 
 		for j := 0; j < 10; j++ {
-			hwio.DigitalWrite(blankPin, hwio.HIGH)
-			hwio.DigitalWrite(blankPin, hwio.LOW)
+			hwio.DigitalWrite(blankPin, hwio.High)
+			hwio.DigitalWrite(blankPin, hwio.Low)
 			clockData(gsclkPin)
 		}
 
@@ -70,26 +70,26 @@ func writeData(val uint, sinPin hwio.Pin, sclkPin hwio.Pin, xlatPin hwio.Pin) {
 		v := val
 		for j := 0; j < 12; j++ {
 			if (v & mask) != 0 {
-				hwio.DigitalWrite(sinPin, hwio.HIGH)
+				hwio.DigitalWrite(sinPin, hwio.High)
 			} else {
-				hwio.DigitalWrite(sinPin, hwio.HIGH)
+				hwio.DigitalWrite(sinPin, hwio.High)
 			}
-			hwio.DigitalWrite(sclkPin, hwio.HIGH)
-			hwio.DigitalWrite(sclkPin, hwio.LOW)
+			hwio.DigitalWrite(sclkPin, hwio.High)
+			hwio.DigitalWrite(sclkPin, hwio.Low)
 
 			v = v << 1
 			bits++
 		}
 	}
 
-	hwio.DigitalWrite(xlatPin, hwio.HIGH)
-	hwio.DigitalWrite(xlatPin, hwio.LOW)
+	hwio.DigitalWrite(xlatPin, hwio.High)
+	hwio.DigitalWrite(xlatPin, hwio.Low)
 	fmt.Printf("Wrote %d bits\n", bits)
 }
 
 func clockData(gsclkPin hwio.Pin) {
 	for g := 0; g < 4096; g++ {
-		hwio.DigitalWrite(gsclkPin, hwio.HIGH)
-		hwio.DigitalWrite(gsclkPin, hwio.LOW)
+		hwio.DigitalWrite(gsclkPin, hwio.High)
+		hwio.DigitalWrite(gsclkPin, hwio.Low)
 	}
 }

@@ -9,31 +9,31 @@ type PinIOMode int
 
 // The modes for PinMode.
 const (
-	INPUT PinIOMode = iota
-	OUTPUT
-	INPUT_PULLUP
-	INPUT_PULLDOWN
+	Input         PinIOMode = iota
+	Output
+	InputPullUp
+	InputPullDown
 )
 
 // String representation of pin IO mode
 func (mode PinIOMode) String() string {
 	switch mode {
-	case INPUT:
-		return "INPUT"
-	case OUTPUT:
-		return "OUTPUT"
-	case INPUT_PULLUP:
-		return "INPUT_PULLUP"
-	case INPUT_PULLDOWN:
-		return "INPUT_PULLDOWN"
+	case Input:
+		return "Input"
+	case Output:
+		return "Output"
+	case InputPullUp:
+		return "InputPullUp"
+	case InputPullDown:
+		return "InputPullDown"
 	}
 	return ""
 }
 
 // Convenience constants for digital pin values.
 const (
-	HIGH = 1
-	LOW  = 0
+	High = 1
+	Low  = 0
 )
 
 type Pin int

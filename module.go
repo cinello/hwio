@@ -36,7 +36,7 @@ type PWMModule interface {
 	// Set the period of this pin, in nanoseconds
 	SetPeriod(pin Pin, ns int64) error
 
-	// Set the duty time, the amount of time during each period that that output is HIGH.
+	// Set the duty time, the amount of time during each period that that output is High.
 	SetDuty(pin Pin, ns int64) error
 }
 

@@ -68,20 +68,20 @@ func TestPinMode(t *testing.T) {
 	gpio := getMockGPIO(t)
 
 	// Set pin 0 to input. We expect no error as it's GPIO
-	e := PinMode(0, INPUT)
+	e := PinMode(0, Input)
 	if e != nil {
 		t.Errorf("function GetPin('P1') should not return an error, returned '%s'", e)
 	}
 	m := gpio.MockGetPinMode(0)
-	if m != INPUT {
+	if m != Input {
 		t.Error("pin set to read mode is not set in the driver")
 	}
 
 	// Change pin 0 to output. We expect no error in this case either, and the
 	// new pin mode takes effect
-	e = PinMode(0, OUTPUT)
+	e = PinMode(0, Output)
 	m = gpio.MockGetPinMode(0)
-	if m != OUTPUT {
+	if m != Output {
 		t.Error("pin changed from read to write mode is not set in the driver")
 	}
 }
@@ -92,18 +92,18 @@ func TestDigitalWrite(t *testing.T) {
 	gpio := getMockGPIO(t)
 
 	pin2, _ := GetPin("p2")
-	PinMode(pin2, OUTPUT)
-	DigitalWrite(pin2, LOW)
+	PinMode(pin2, Output)
+	DigitalWrite(pin2, Low)
 
 	v := gpio.MockGetPinValue(pin2)
-	if v != LOW {
-		t.Error("after writing LOW to pin, driver should know this value")
+	if v != Low {
+		t.Error("after writing Low to pin, driver should know this value")
 	}
 
-	DigitalWrite(pin2, HIGH)
+	DigitalWrite(pin2, High)
 	v = gpio.MockGetPinValue(pin2)
-	if v != HIGH {
-		t.Error("After writing HIGH to pin, driver should know this value")
+	if v != High {
+		t.Error("After writing High to pin, driver should know this value")
 	}
 }
 
@@ -113,9 +113,9 @@ func TestDigitalRead(t *testing.T) {
 
 	pin1, _ := GetPin("p1")
 
-	PinMode(pin1, INPUT)
-	writePinAndCheck(t, pin1, LOW)
-	writePinAndCheck(t, pin1, HIGH)
+	PinMode(pin1, Input)
+	writePinAndCheck(t, pin1, Low)
+	writePinAndCheck(t, pin1, High)
 }
 
 func getMockGPIO(t *testing.T) *testGPIOModule {

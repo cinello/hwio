@@ -96,7 +96,7 @@ func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 		return e
 	}
 
-	if mode == OUTPUT {
+	if mode == Output {
 		e = openPin.gpioDirection("out")
 		if e != nil {
 			return e
@@ -107,9 +107,9 @@ func (module *DTGPIOModule) PinMode(pin Pin, mode PinIOMode) error {
 
 		// pull := BB_CONF_PULL_DISABLE
 		// // note: pull up/down modes assume that CONF_PULLDOWN resets the pull disable bit
-		// if mode == INPUT_PULLUP {
+		// if mode == InputPullUp {
 		// 	pull = BB_CONF_PULLUP
-		// } else if mode == INPUT_PULLDOWN {
+		// } else if mode == InputPullDown {
 		// 	pull = BB_CONF_PULLDOWN
 		// }
 
@@ -126,7 +126,7 @@ func (module *DTGPIOModule) DigitalWrite(pin Pin, value int) (e error) {
 	if openPin == nil {
 		return errors.New("pin is being written but has not been opened, called PinMode")
 	}
-	// 	if a.pinIOMode != OUTPUT {
+	// 	if a.pinIOMode != Output {
 	// 		return errors.New(fmt.Sprintf("DigitalWrite: pin %d mode is not set for output", pin))
 	// 	}
 	openPin.gpioSetValue(value)
@@ -138,7 +138,7 @@ func (module *DTGPIOModule) DigitalRead(pin Pin) (value int, e error) {
 	if openPin == nil {
 		return 0, errors.New("pin is being read from but has not been opened, call PinMode")
 	}
-	// 	if a.pinIOMode != INPUT && a.pinIOMode != INPUT_PULLUP && a.pinIOMode != INPUT_PULLDOWN {
+	// 	if a.pinIOMode != Input && a.pinIOMode != InputPullUp && a.pinIOMode != InputPullDown {
 	// 		e = errors.New(fmt.Sprintf("DigitalRead: pin %d mode not set for input", pin))
 	// 		return
 	// 	}
@@ -230,7 +230,7 @@ func (op *DTGPIOModuleOpenPin) gpioDirection(dir string) error {
 	return e
 }
 
-// Get the value. Will return HIGH or LOW
+// Get the value. Will return High or Low
 func (op *DTGPIOModuleOpenPin) gpioGetValue() (int, error) {
 	var b []byte
 	b = make([]byte, 1)
@@ -239,15 +239,15 @@ func (op *DTGPIOModuleOpenPin) gpioGetValue() (int, error) {
 	value := 0
 	if n > 0 {
 		if b[0] == '1' {
-			value = HIGH
+			value = High
 		} else {
-			value = LOW
+			value = Low
 		}
 	}
 	return value, e
 }
 
-// Set the value, Expects HIGH or LOW
+// Set the value, Expects High or Low
 func (op *DTGPIOModuleOpenPin) gpioSetValue(value int) error {
 	if op.valueFile == nil {
 		return errors.New("value file is not defined")

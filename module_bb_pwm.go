@@ -128,7 +128,7 @@ func (module *BBPWMModule) SetPeriod(pin Pin, ns int64) error {
 	return openPin.setPeriod(ns)
 }
 
-// Set the duty time, the amount of time during each period that that output is HIGH.
+// Set the duty time, the amount of time during each period that that output is High.
 func (module *BBPWMModule) SetDuty(pin Pin, ns int64) error {
 	openPin := module.openPins[pin]
 	if openPin == nil {

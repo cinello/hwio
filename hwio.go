@@ -255,16 +255,16 @@ func DigitalRead(pin Pin) (result int, e error) {
 	return gpio.DigitalRead(pin)
 }
 
-// given a logic level of HIGH or LOW, return the opposite. Invalid values returned as LOW.
+// given a logic level of High or Low, return the opposite. Invalid values returned as Low.
 func Negate(logicLevel int) int {
-	if logicLevel == LOW {
-		return HIGH
+	if logicLevel == Low {
+		return High
 	}
-	return LOW
+	return Low
 }
 
 // Helper function to pulse a pin, which must have been set as GPIO.
-// 'active' is LOW or HIGH. Pulse sets pin to inactive, then active for
+// 'active' is Low or High. Pulse sets pin to inactive, then active for
 // 'durationMicroseconds' and the back to inactive.
 func Pulse(pin Pin, active int, durationMicroseconds int) error {
 	// set to inactive state, in case it wasn't already
@@ -384,11 +384,11 @@ func ShiftOutSize(dataPin Pin, clockPin Pin, value uint, order BitShiftOrder, n 
 			return e
 		}
 		// pulse clock high and then low
-		e = DigitalWrite(clockPin, HIGH)
+		e = DigitalWrite(clockPin, High)
 		if e != nil {
 			return e
 		}
-		DigitalWrite(clockPin, LOW)
+		DigitalWrite(clockPin, Low)
 	}
 	return nil
 }

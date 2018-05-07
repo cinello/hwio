@@ -25,7 +25,7 @@ func main() {
 
 	// Set the mode of the pin to output. This will return an error if, for example,
 	// we were trying to set an analog input to an output.
-	err = hwio.PinMode(ledPin, hwio.OUTPUT)
+	err = hwio.PinMode(ledPin, hwio.Output)
 
 	if err != nil {
 		fmt.Println(err)
@@ -34,9 +34,9 @@ func main() {
 
 	// Run the blink forever
 	for {
-		hwio.DigitalWrite(ledPin, hwio.HIGH)
+		hwio.DigitalWrite(ledPin, hwio.High)
 		hwio.Delay(1000)
-		hwio.DigitalWrite(ledPin, hwio.LOW)
+		hwio.DigitalWrite(ledPin, hwio.Low)
 		hwio.Delay(1000)
 	}
 }

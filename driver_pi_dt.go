@@ -4,10 +4,10 @@ package hwio
 //
 // Things known to work (tested on raspian 3.10+ kernel, rev 1 board):
 // - digital write on all support ed GPIO pins
-// - digital read on all GPIO pins, for modes INPUT.
+// - digital read on all GPIO pins, for modes Input.
 //
 // Known issues:
-// - INPUT_PULLUP and INPUT_PULLDOWN not implemented yet.
+// - InputPullUp and InputPullDown not implemented yet.
 // - no support yet for SPI, serial
 //
 // References:
