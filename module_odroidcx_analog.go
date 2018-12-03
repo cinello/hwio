@@ -112,6 +112,10 @@ func (module *ODroidCXAnalogModule) makeOpenAnalogPin(pin Pin) error {
 	}
 
 	path := fmt.Sprintf("/sys/class/saradc/saradc_ch%d", p.analogLogical)
+	hw := CpuInfo(3, "Hardware")
+	if hw == "ODROID-C2" {
+		path = fmt.Sprintf("/sys/class/saradc/ch%d", p.analogLogical)
+	}
 	result := &ODroidCXAnalogModuleOpenPin{pin: pin, analogLogical: p.analogLogical, analogFile: path}
 
 	module.openPins[pin] = result
