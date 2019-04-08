@@ -48,7 +48,7 @@ var assignedPins map[Pin]*assignedPin
 func init() {
 	assignedPins = make(map[Pin]*assignedPin)
 	if err := determineDriver(); err != nil {
-		log.Fatal(err)
+		log.Printf("HWIO: %s", err)
 	}
 }
 
